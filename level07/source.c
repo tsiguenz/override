@@ -1,28 +1,61 @@
 #include <stdio.h>
 #include <string.h>
+void clear_stdin() {
+  char c = 0;
+  while (c != '\n')
+    c = getchar();
+}
 
-int store_number(char **storage) {
-  int index = 0; // -0xc
-  int num = 0; // -0x10
+unsigned int get_unum() {
+  unsigned int num = 0;
+  fflush(stdout);
+  scanf("%u", &num);
+  clear_stdin();
+  return num;
+}
+
+int store_number(int **storage) {
+  int index = 0;        // -0xc
+  unsigned int num = 0; // -0x10
   printf(" Number: ");
   num = get_unum();
   printf(" Index: ");
   index = get_unum();
-  (*storage)[index * 4] = num;
+  if (index % 3 == 0 || (index >> 24) == 0xb7) {
+    puts(" *** ERROR! ***");
+    puts("   This index is reserved for wil!");
+    puts(" *** ERROR! ***");
+    return 1;
+  }
+  (*storage)[index] = num;
   return 0;
 }
 
-int read_number(char **storage) {
+int read_number(char *storage) {
+  unsigned int index = 0;
+  printf(" Index: ");
+  index = get_unum();
+  printf(" Number at data[%u] is %u\n", index, storage[index]);
+  return 0;
 }
+// printf got = 0x804a000 = 134520832
+// buffer address = 0xffffd4d4 = 4294956244
+// system address: 0xf7e6aed0 = 4159090384
+// exit address: 0xf7e5eb70 = 4159040368
+// to write on printf got = 134531884 / 4 = 33632971
+// /bin/sh address: 0xf7f897ec = 4160264172
+// esp + 4 address: 0xffffd4b4 to write buff + 1073741816
+//
+// read_number 0x080486d7 to write 134525444 / 4 = 33631361
 
 int main(int ac, char **av, char **envp) {
   // int canary = *0x14; // 0x1cc
   char buff[20] = {0}; // 0x1b8
-  int a = 0; // 0x1b4
-  char storage[400];  // 0x24
-  char **args = av; // 0x1c
-  char **env = envp; // 0x18
-  int b = 0; // 0x14
+  int a = 0;           // 0x1b4
+  int storage[100];    // 0x24
+  char **args = av;    // 0x1c
+  char **env = envp;   // 0x18
+  int b = 0;           // 0x14
 
   while (*args != NULL) {
     memset(*args, 0, strlen(*args) - 1);
@@ -58,7 +91,7 @@ int main(int ac, char **av, char **envp) {
       printf(" Failed to do %s command\n", buff);
     bzero(buff, 20);
   }
-//  if (canary != *0x14)
-//    __stack_chk_fail();
+  //  if (canary != *0x14)
+  //    __stack_chk_fail();
   return 0;
 }
