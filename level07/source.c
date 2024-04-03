@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+
 void clear_stdin() {
   char c = 0;
   while (c != '\n')
@@ -38,15 +39,6 @@ int read_number(char *storage) {
   printf(" Number at data[%u] is %u\n", index, storage[index]);
   return 0;
 }
-// printf got = 0x804a000 = 134520832
-// buffer address = 0xffffd4d4 = 4294956244
-// system address: 0xf7e6aed0 = 4159090384
-// exit address: 0xf7e5eb70 = 4159040368
-// to write on printf got = 134531884 / 4 = 33632971
-// /bin/sh address: 0xf7f897ec = 4160264172
-// esp + 4 address: 0xffffd4b4 to write buff + 1073741816
-//
-// read_number 0x080486d7 to write 134525444 / 4 = 33631361
 
 int main(int ac, char **av, char **envp) {
   // int canary = *0x14; // 0x1cc
