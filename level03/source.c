@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
 void decrypt(int offset) {
 	int	 canary		= *0x14;
 	char buffer[17] = {0x33617c7d, 0x7b66737e, 0x67667360, 0x757c7d51, '\0'};
@@ -43,8 +48,9 @@ int main() {
 	puts("***********************************");
 	printf("Password:");
 
-	int nb;
-	scanf("%d" & nb) test(nb, 0x1337d00d);
+	int input;
+	scanf("%d", &input);
+	test(input, 0x1337d00d);
 
 	return 0;
 }

@@ -1,5 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+void secret_backdoor(void) {
+	char *cmd;
+	fgets(cmd, 128, stdin);
+	system(cmd);
+}
 
 void set_msg(char **buffer) {
 	char msg[1024];
