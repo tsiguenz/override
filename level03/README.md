@@ -12,7 +12,8 @@ Password:18
 Invalid Password
 ```
 
-With the disassembly code we have write c code. A substraction with 0x1337d00d is performed. We name this result `offset`. The offset must be above of 21 to run decrypt function with it.   
+With the disassembly code we have write c code. A substraction with `0x1337d00d` is performed. We name this result `offset`.  
+The offset must be above of 21 to run decrypt function with it.   
 In decrypt funtion, we have a buffer in which we add the offset for each byte.  
 We must convert our buffer to obtains "Congratulations!".
 
@@ -21,10 +22,10 @@ We must convert our buffer to obtains "Congratulations!".
    g n o C |    u t a r |    i t a l |    ! s n o |
 ```
 
-We can see that 'a' = '0x73'.  
-'0x73' = 115
-'a' = 97
-`offset` = 115 - 97 = 18
+We can see that a = `0x73`.  
+`0x73` = 115  
+a = 97  
+offset = 115 - 97 = 18
 
 So we want obtain 18 in parameter of decrytp.  
 ```python

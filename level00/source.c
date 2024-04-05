@@ -7,7 +7,7 @@ int main() {
 	printf("Password:");
 	scanf("%d", &nb);
 
-	if (nb != 0x149c) {
+	if (nb == 0x149c) {
 		puts("\nAuthenticated!");
 		system("/bin/sh");
 	} else {

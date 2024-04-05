@@ -3,12 +3,14 @@
 
 void clear_stdin() {
   char c = 0;
+  
   while (c != '\n')
     c = getchar();
 }
 
 unsigned int get_unum() {
   unsigned int num = 0;
+
   fflush(stdout);
   scanf("%u", &num);
   clear_stdin();
@@ -16,8 +18,9 @@ unsigned int get_unum() {
 }
 
 int store_number(int **storage) {
-  int index = 0;        // -0xc
-  unsigned int num = 0; // -0x10
+  unsigned int index = 0; // -0xc
+  unsigned int num = 0;   // -0x10
+
   printf(" Number: ");
   num = get_unum();
   printf(" Index: ");
@@ -34,6 +37,7 @@ int store_number(int **storage) {
 
 int read_number(char *storage) {
   unsigned int index = 0;
+
   printf(" Index: ");
   index = get_unum();
   printf(" Number at data[%u] is %u\n", index, storage[index]);

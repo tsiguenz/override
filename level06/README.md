@@ -83,8 +83,9 @@ $ cat /home/users/level07/.pass
 GbcPDRgsFK77LNnnuh7QyFYA2942Gp8yKj9KrWD8
 ```
 
-We can obtain the value with a printf in a code, after the while.
+We can obtain the value with a printf in the code, after the while.
+
 ```c
-	printf("Value: %u", modulo);
+	printf("Value: %u\n", modulo);
 ```
 

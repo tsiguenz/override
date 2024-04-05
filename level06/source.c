@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/ptrace.h>
 
 int auth(char *buffer, unsigned int n) {
 	buffer[strcspn(buffer, "\n")] = '\0';
@@ -8,19 +9,17 @@ int auth(char *buffer, unsigned int n) {
 
 	if (len > 5) {
 		if (0xffffffff != ptrace(PTRACE_TRACEME)) {
-
 			int modulo = (buffer[3] ^ 0x1337) + 0x5eeded;
 			int a	   = 0;
 
 			while (a < len) {
 				if (buffer[a] > 31) {
-
 					modulo += (buffer[a] ^ modulo) % 0x539;
 					a++;
 				} else
 					return 1;
 			}
-			// printf("RET %u", modulo);
+			// printf("RET %u\n", modulo);
 			if (n == modulo)
 				return 0;
 		} else {
@@ -29,8 +28,8 @@ int auth(char *buffer, unsigned int n) {
 			puts("\033[32m---------------------------");
 			return 1;
 		}
-	} else
-		return 1;
+	}
+	return 1;
 }
 
 int main(int ac, char *av[]) {
